@@ -1,9 +1,6 @@
 Some text <Add text>/
 Text which must stay here!!!
 
-
-1. First message (delete [it's goes to 1st commit]).
 2. Second message (change [it's goes to 2nd commit]).
-3. Third message (delete [it's goes to 1st commit]).
 4. Fourth message (add some text [it's goes to 3rd commit]).
 5. Fifth message (add some text [it's goes to 3rd commit]).
