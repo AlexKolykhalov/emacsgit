@@ -1,5 +1,5 @@
 import Router from 'express';
-import {create, get, update, remove} from '../controllers/api.js';
+import { create, get, update, remove } from '../controllers/api.js';
 
 
 const router = Router();
