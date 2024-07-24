@@ -24,6 +24,8 @@ addBtn.addEventListener('click', async () => {
     const insert = document.querySelector('#input');
     if (insert) {
 	try {
+	    addBtn.textContent = 'Adding to DB';
+	    insert.setAttribute('disabled', '');
 	    const response = await fetch(
 		'/api/key',
 		{
@@ -39,6 +41,8 @@ addBtn.addEventListener('click', async () => {
 		const elementBD = await response.json();
 		const list = document.querySelector('.result');
 		if (list) {
+		    addBtn.textContent = 'Add to DB';
+		    insert.removeAttribute('disabled');
 		    const listElement = createItem(elementBD.id, elementBD.data);
 		    list.appendChild(listElement);
 		}
@@ -74,6 +78,8 @@ function createItem(id, value) {
 	});
 	saveBtn.addEventListener('click', async () => {
 	    const id = listElement.getAttribute('data-index');
+	    saveBtn.textContent = 'Saving...';
+	    input.setAttribute('disabled', '');
 	    const res = await fetch(
 		`/api/key/${id}`,
 		{
@@ -88,8 +94,8 @@ function createItem(id, value) {
 	    if (res.status === 200) {
 		const elementBD = await res.json();
 		input.setAttribute('value', elementBD.data);
-		input.setAttribute('disabled', '');
 		saveBtn.setAttribute('data-visible', 'false');
+		saveBtn.textContent = 'Save';
 		editBtn.removeAttribute('data-visible');		
 	    }
 	});
