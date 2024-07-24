@@ -3,7 +3,7 @@ import path from 'path';
 import router from './routes/api.js';
 
 const __dirname = path.resolve();
-const port = process.env.PORT ?? 3000;
+const port = 3000;
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, 'static')));
