@@ -1,0 +1,13 @@
+{
+    "name": "git-testing",
+    "version": "1.0.0",
+    "main": "server.js",
+    "type": "commonjs",
+    "scripts": {},
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {},
+    "devDependencies": {}
+}
