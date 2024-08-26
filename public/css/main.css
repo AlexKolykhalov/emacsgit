@@ -91,9 +91,10 @@ img:not([alt]) {
 /* ************************* */
 
 :root {
-    --clr-primary-400: hsl(10, 79%, 65%);
+    --clr-primary-red:   #CC0000;
+    --clr-primary-green: #6CE650;
 
-    --clr-neutral-400: hsl(28, 10%, 53%);
+    --clr-neutral-000: #FFFFFF;
 
     --ff: '', sans-serif;
 
@@ -149,6 +150,10 @@ body {
     font-weight: 400;
 }
 
+header {
+    height: 10vh;
+}
+
 /* ************************* */
 /*        Composition        */
 /* ************************* */
@@ -157,11 +162,11 @@ body {
     max-width: 60ch;
 } */
 
-/* .box-v-m {
+.box-v-m {
     min-height: 70vh;
-} */
+}
 
-/* .center-v {
+.center-v {
     display: flex;
     flex-direction: column;
 }
@@ -169,13 +174,19 @@ body {
 .center-v>* {
     margin-top: auto;
     margin-bottom: auto;
-} */
+}
 
 .center-h {
     box-sizing: content-box;
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.right-h {
+    box-sizing: content-box;
+    display: block;
+    margin-left: auto;
 }
 
 /* ↓ Intrinsic Centering: That is, centering elements based on their natural, content-based widths. */
@@ -212,6 +223,10 @@ body {
     flex-grow: var(--flex-grow, 0);
     /* Switch the layout at the --break */
     flex-basis: calc((var(--break) - 100%) * 999);
+}
+
+.no-wrap {
+    flex-wrap: nowrap;
 }
 
 .break-m {
@@ -283,6 +298,52 @@ body {
 /*          Blocks           */
 /* ************************* */
 
+.pop-up-message {
+    pointer-events: none;
+    opacity: 0;
+    
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.user-update-form > div:before,
+.user-login-form > div:before,
+.user-signup-form > div:before {
+    content: "";
+
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    color: red;
+    font-size: var(--scale-300);
+    font-weight: 600;
+    width: 270px;
+    text-align: right;
+}
+
+.user-update-form > div[data-status="error"]:nth-child(1):before {
+    content: 'Invalid email';
+}
+
+.user-update-form > div[data-status="error"]:nth-child(2):before {
+    content: 'First name must be from 3 to 40 symbols';
+}
+
+.user-update-form > div[data-status="error"]:nth-child(3):before {
+    content: 'Last name must be from 3 to 40 symbols';
+}
+
+.user-login-form > div[data-status="error"]:nth-child(1):before,
+.user-signup-form > div[data-status="error"]:nth-child(1):before {
+    content: 'Invalid email';
+}
+
+.user-login-form > div[data-status="error"]:nth-child(2):before,
+.user-signup-form > div[data-status="error"]:nth-child(2):before {
+    content: 'Password must be from 3 to 10 symbols';
+}
 
 /* ************************* */
 /*         Utilities         */
@@ -300,40 +361,52 @@ body {
     border-width: 0;
 }
 
-/* .relative {
-    position: relative;
-} */
+.absolute {
+    position: absolute;
+}
 
-/* .main-axis-center {
+.relative {
+    position: relative;
+}
+
+.main-axis-center {
     justify-content: center;
-} */
+}
 
 /* .main-axis-end {
     justify-content: flex-end;
 } */
 
-.main-axis-space-between {
-    justify-content: space-between;
-}
-
-/* .cross-axis-center { */
-/*     align-items: center; */
+/* .main-axis-space-between { */
+/*     justify-content: space-between; */
 /* } */
 
-.cross-axis-end {
-    align-items: flex-end;
+.cross-axis-center {
+    align-items: center;
 }
 
-/* .cross-axis-stretch {
-    align-items: stretch;
-} */
+/* .cross-axis-end { */
+/*     align-items: flex-end; */
+/* } */
+
+/* .cross-axis-stretch { */
+/*     align-items: stretch; */
+/* } */
 
 .pad-h-m {
    padding-inline: 1rem;
 }
 
+.pad-v-sm {
+    padding-block: 0.5rem;
+}
+
 .mar-v-m {
     margin-block: 1rem;
+}
+
+.gap-sm {
+    gap: 0.5rem;
 }
 
 .gap-m {
@@ -346,6 +419,10 @@ body {
 
 .text-center {
     text-align: center;
+}
+
+.border-radius-sm {
+    border-radius: 0.35rem;
 }
 
 /* .uppercase {
@@ -396,9 +473,9 @@ body {
     font-size: var(--scale-200);
 } */
 
-/* .fs-300 {
+.fs-300 {
     font-size: var(--scale-300);
-} */
+}
 
 /* .fs-400 {
     font-size: var(--scale-400);
@@ -424,10 +501,62 @@ body {
     font-size: var(--scale-900);
 } */
 
+.clr-n-000 {
+    color: var(--clr-neutral-000);
+}
+
+.bg-p-red {
+    background-color: var(--clr-primary-red);
+}
+
+.bg-p-green {
+    background-color: var(--clr-primary-green);
+}
+
 /* ************************* */
 /*        Exceptions         */
 /* ************************* */
 
 [data-visible="false"] {
     display: none;
+}
+
+[animated] {
+    animation: popUp 2s ease-in;
+}
+
+@keyframes popUp {
+    20% {
+	opacity: 1;
+	bottom: 4rem;
+    }
+
+    90% {
+	opacity: 1;
+	bottom: 4rem;
+    }
+
+    100% {
+	opacity: 0.5;
+	bottom: 0.5rem;
+    }
+}
+
+@media (min-width: 48em) {
+    @keyframes popUp {
+	20% {
+	    opacity: 1;
+	    bottom: 1rem;
+	}
+
+	90% {
+	    opacity: 1;
+	    bottom: 1rem;
+	}
+
+	100% {
+	    opacity: 0.5;
+	    bottom: 0.5rem;
+	}
+    }
 }

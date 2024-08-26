@@ -1,17 +1,27 @@
+// @ts-check
+
 import jwt from 'jsonwebtoken';
 
 import db from '../database/models/index.js'
+import AppError from '../errors/app.error.js';
 
 
+/**
+ * Generates a new pair of tokens.
+ * @function
+ * @param {{}} payload
+ * @returns {{accessToken:string, refreshToken:string}}
+ */
 function generateTokens(payload) {
     const accessToken = jwt.sign(
 	payload,
 	process.env.SECRET_ACCESS_TOKEN,
-	{expiresIn: '1min'}
+	{expiresIn: '10s'}
     );
     const refreshToken = jwt.sign(
 	payload,
 	process.env.SECRET_REFRESH_TOKEN,
+	{expiresIn: '20s'}
     );
 
     return {
@@ -20,6 +30,14 @@ function generateTokens(payload) {
     };
 }
 
+/**
+ * Saves token in DB.
+ * @async
+ * @function
+ * @param {string} token
+ * @param {string} id User ID
+ * @returns {Promise<void>}
+ */
 async function save(token, id) {
     const candidate = await db.Token.findOne({where: {userId: id}});
     if (!candidate) {
@@ -30,6 +48,25 @@ async function save(token, id) {
     }
 }
 
+/**
+ * Delete token from DB.
+ * @async
+ * @function
+ * @param {string} token
+ * @returns {Promise<void>}
+ * @throws {AppError}
+ */
+async function remove(token) {
+    const result = await db.Token.destroy({where: {hash: token}});
+    if (!result) throw AppError.badRequest('Cant find token');
+    return result;
+}
+
+/**
+ * @function
+ * @param {string} token
+ * @returns {{}|null}
+ */
 function verifyAccessToken(token) {
     try {
 	return jwt.verify(token, process.env.SECRET_ACCESS_TOKEN);
@@ -38,6 +75,11 @@ function verifyAccessToken(token) {
     }
 }
 
+/**
+ * @function
+ * @param {string} token
+ * @returns {{}|null}
+ */
 function verifyRefreshToken(token) {
     try {
 	return jwt.verify(token, process.env.SECRET_REFRESH_TOKEN);
@@ -47,4 +89,4 @@ function verifyRefreshToken(token) {
 }
 
 
-export { generateTokens, save, verifyAccessToken, verifyRefreshToken };
+export { generateTokens, save, remove, verifyAccessToken, verifyRefreshToken };

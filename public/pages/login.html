@@ -8,25 +8,30 @@
   <meta name="keywords" content="NodeJS, postgres">
 
   <title>Login page</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>
+  <header></header>
   <main class="content">
-    <form>
-      <div class="column">
-	<label for="email">Email</label>
-	<input id="email" type="email">
-      </div>
-      <div class="column">
-	<label for="password">Password</label>
-	<input id="password" type="password">
-      </div>
-      <button>Log in</button>
-      <span>Don't have an account? <a href="signup.html">Create account</a></span>
-    </form>
+    <div class="box-v-m">
+      <form class="user-login-form { column gap-m main-axis-center }">
+	<div class="[ relative ] column">
+	  <label class="fs-300" for="email">Email</label>
+	  <input id="email" type="email">
+	</div>
+	<div class="[ relative ] column">
+	  <label class="fs-300" for="password">Password</label>
+	  <input id="password" type="password">
+	</div>
+	<button class="right-h" type="button">Log in</button>
+	<span>Don't have an account? <a href="/signup">Create account</a></span>
+      </form>
+    </div>
   </main>
-  <!-- <script src="main.js"></script> -->
+  <div class="pop-up-message"></div>
+  <script type="module" src="../js/login/login.js"></script>
+  <script src="../js/components/PopupMessage/PopupMessage.js"></script>
 </body>
 
 </html>

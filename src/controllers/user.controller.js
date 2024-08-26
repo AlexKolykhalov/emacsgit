@@ -1,24 +1,46 @@
+// @ts-check
+
+import express from 'express';
+
 import { userService } from '../services/index.service.js';
 
-
-async function get(req, res) {
-    // try {
-    // 	const id = req.params.id;
-    // 	if (id) {
-    // 	    const result = await userService.get(id);
-    // 	    res.json(result);
-    // 	}        
-    // } catch (error) {
-	
-    // }
+/**
+ * Handles a GET request to the / endpoint.
+ * @async
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise<void>}
+ */
+async function get(req, res, next) {
+    try {
+	const token = req.headers.authorization?.split(' ')[1];
+	const user = await userService.get(token ?? '');
+	res.status(200).json(user);
+    } catch (error) {
+	next(error);
+    }
 }
 
-async function update(req, res) {
-    // try {
-    // 	res.json('update');	
-    // } catch (error) {
-	
-    // }
+/**
+ * Handles a PUT request to the / endpoint.
+ * @async
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise<void>}
+ */
+async function update(req, res, next) {
+    try {
+	const token = req.headers.authorization?.split(' ')[1];
+	const data = req.body;
+	const user = await userService.update(token ?? '', data);
+	res.status(201).json(user);
+    } catch (error) {
+	next(error);
+    }
 }
 
 async function remove(req, res) {

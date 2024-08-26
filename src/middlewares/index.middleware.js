@@ -1,6 +1,9 @@
+// @ts-check
+
 import authValidation from './auth.middleware.js';
-import { accessTokenValidation, refreshTokenValidation } from './token.middleware.js';
+import userValidation from './user.middleware.js';
+import tokenValidation from './token.middleware.js';
 import errorHandler from './error.middleware.js';
 
 
-export { authValidation, accessTokenValidation, refreshTokenValidation, errorHandler };
+export { authValidation, userValidation, tokenValidation, errorHandler };
