@@ -39,9 +39,9 @@ window.addEventListener('load', async () => {
 		    const user = await resUser.json();
 		    fillElements(user);
 		}
-		if (resUser.status === 401) location.href = '/login';
+		// if (resUser.status === 401) location.href = '/login';
 	    }
-	    if (resRefresh.status === 401) location.href = '/login';
+	    // if (resRefresh.status === 401) location.href = '/login';
 	}
     } catch (error) {
 	console.error('Internet connection error');
