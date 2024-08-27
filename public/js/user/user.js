@@ -39,13 +39,13 @@ window.addEventListener('load', async () => {
 		    const user = await resUser.json();
 		    fillElements(user);
 		}
-		// if (resUser.status === 401) location.href = '/login';
+		if (resUser.status === 401) location.href = '/login';
 	    }
-	    // if (resRefresh.status === 401) location.href = '/login';
+	    if (resRefresh.status === 401) location.href = '/login';
 	}
     } catch (error) {
 	console.error('Internet connection error');
-	// location.href = '/login';
+	location.href = '/login';
     }
 });
 
@@ -71,7 +71,7 @@ updateBtn?.addEventListener('click', async () => {
 	    ]
 	);
 	const response = await fetch(
-	    'http://localhost:3000/user',
+	    `${baseUrl}/user`,
 	    requestOptionsWithAuthToken('PUT', body)
 	);
 	if (response.status === 201) {
