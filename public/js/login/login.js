@@ -5,10 +5,15 @@ import { getValues, showErrorMessages, showPopUpMessage } from "../utils/utils.j
 /** @type {HTMLButtonElement|null} */
 const loginBtn = document.querySelector('button');
 
+/** @type {string} */
+const baseUrl = location.hostname === 'localhost' ?
+      "http://localhost:3000":
+      "https://emacsgit.vercel.app";
+
 // ************************** 1. Events *********************************//
 
 loginBtn?.addEventListener('click', async () => {
-    removeErrorMessages(); 
+    removeErrorMessages();
     try {
 	const body = getValues(
 	    [
@@ -17,7 +22,7 @@ loginBtn?.addEventListener('click', async () => {
 	    ]
 	);
 	const response = await fetch(
-	    'http://localhost:3000/login',
+	    `${baseUrl}/login`,
 	    {
 		method: 'POST',
 		headers: {'Content-Type': 'application/json'},
