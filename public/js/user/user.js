@@ -9,12 +9,17 @@ const logoutBtn = document.querySelector('header button');
 /** @type {HTMLButtonElement|null} */
 const updateBtn = document.querySelector('main button');
 
+/** @type {string} */
+const baseUrl = location.hostname === 'localhost' ?
+      "http://localhost:3000":
+      "https://emacsgit.vercel.app";
+
 // ************************** 1. Events *********************************//
 
 window.addEventListener('load', async () => {
     try {
 	const response = await fetch(
-	    'http://localhost:3000/user',
+	    `${baseUrl}/user`,
 	    requestOptionsWithAuthToken('GET')
 	);
 	if (response.status === 200) {
@@ -22,12 +27,12 @@ window.addEventListener('load', async () => {
 	    fillElements(user);
 	}
 	if (response.status === 401) {
-	    const resRefresh = await fetch('http://localhost:3000/refresh');
+	    const resRefresh = await fetch(`${baseUrl}/refresh`);
 	    if (resRefresh.status === 200) {
 		const token = await resRefresh.json();
 		localStorage.setItem('token', token);
 		const resUser = await fetch(
-		    'http://localhost:3000/user',
+		    `${baseUrl}/user`,
 		    requestOptionsWithAuthToken('GET')
 		);
 		if (resUser.status === 200) {
@@ -46,7 +51,7 @@ window.addEventListener('load', async () => {
 
 logoutBtn?.addEventListener('click', async () => {
     try {
-	const response = await fetch('http://localhost:3000/logout');
+	const response = await fetch(`${baseUrl}/logout`);
 	if (response.status === 200) {
 	    localStorage.removeItem('token');
 	    location.href = '/login';
@@ -78,12 +83,12 @@ updateBtn?.addEventListener('click', async () => {
 	    showErrorMessages(data)
 	}
 	if (response.status === 401) {
-	    const resRefresh = await fetch('http://localhost:3000/refresh');
+	    const resRefresh = await fetch(`${baseUrl}/refresh`);
 	    if (resRefresh.status === 200) {
 		const token = await resRefresh.json();
 		localStorage.setItem('token', token);
 		const resUser = await fetch(
-		    'http://localhost:3000/user',
+		    `${baseUrl}/user`,
 		    requestOptionsWithAuthToken('PUT', body),
 		);
 		if (resUser.status === 201) {
@@ -149,7 +154,6 @@ function fillElements(data) {
     /** @type {HTMLInputElement|null} */
     const lastName = document.querySelector('#lastName');
     if (email && firstName && lastName) {
-	console.log(`User after refresh: ${JSON.stringify(data, null, 2)}`);
 	email.value     = data.email;
 	firstName.value = data.firstName;
 	lastName.value  = data.lastName;	
