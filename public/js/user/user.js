@@ -45,7 +45,7 @@ window.addEventListener('load', async () => {
 	}
     } catch (error) {
 	console.error('Internet connection error');
-	location.href = '/login';
+	// location.href = '/login';
     }
 });
 
