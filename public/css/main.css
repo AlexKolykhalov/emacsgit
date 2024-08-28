@@ -373,13 +373,13 @@ header {
     justify-content: center;
 }
 
-/* .main-axis-end {
+.main-axis-end {
     justify-content: flex-end;
-} */
+}
 
-/* .main-axis-space-between { */
-/*     justify-content: space-between; */
-/* } */
+.main-axis-space-between {
+    justify-content: space-between;
+}
 
 .cross-axis-center {
     align-items: center;
@@ -403,6 +403,10 @@ header {
 
 .mar-v-m {
     margin-block: 1rem;
+}
+
+.mar-top-m {
+    margin-top: 1rem;
 }
 
 .gap-sm {
@@ -507,10 +511,6 @@ header {
 
 .bg-p-red {
     background-color: var(--clr-primary-red);
-}
-
-.bg-p-green {
-    background-color: var(--clr-primary-green);
 }
 
 /* ************************* */
