@@ -43,12 +43,24 @@ async function update(req, res, next) {
     }
 }
 
-async function remove(req, res) {
-    // try {
-    // 	res.json('delete');    
-    // } catch (error) {
-	
-    // }
+/**
+ * Handles a DELETE request to the / endpoint.
+ * @async
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise<void>}
+ */
+async function remove(req, res, next) {
+    try {
+	const token = req.headers.authorization?.split(' ')[1];
+	await userService.remove(token ?? '');
+	res.clearCookie("refreshToken");
+	res.sendStatus(204);
+    } catch (error) {
+	next(error);
+    }
 }
 
 

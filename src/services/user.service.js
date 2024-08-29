@@ -4,13 +4,19 @@ import db from '../database/models/index.js';
 import { tokenService } from './index.service.js';
 import AppError from '../errors/index.error.js';
 
+/**
+ * @typedef {object} User
+ * @property {string} firstName
+ * @property {string} lastName
+ * @property {string} email
+ */
 
 /**
  * Gets user data after verifying a token.
  * @async
  * @function
  * @param {string} token
- * @returns {Promise<{}>}
+ * @returns {Promise<User>}
  * @throws {AppError} Throws AppError.unauthorized
  */
 async function get(token) {
@@ -27,7 +33,8 @@ async function get(token) {
  * @async
  * @function
  * @param {string} token
- * @returns 
+ * @param {User} data
+ * @returns {Promise<User>}
  * @throws {AppError} Throws AppError.unauthorized
  */
 async function update(token, data) {
@@ -49,7 +56,20 @@ async function update(token, data) {
     };
 }
 
-async function remove() {
+/**
+ * Remove user from DB after verifying a token.
+ * @async
+ * @function
+ * @param {string} token
+ * @returns {Promise<void>}
+ * @throws {AppError} Throws AppError.unauthorized
+ */
+async function remove(token) {
+    const payload = tokenService.verifyAccessToken(token);
+    if (!payload) throw AppError.unauthorized(
+	'Authorization token is required to access this resource.'
+    );
+    await db.User.destroy({where: {id: payload.id}});
 }
 
 

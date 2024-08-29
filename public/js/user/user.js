@@ -7,7 +7,14 @@ import { getValues, showErrorMessages, showPopUpMessage } from "../utils/utils.j
 const logoutBtn = document.querySelector('header button');
 
 /** @type {HTMLButtonElement|null} */
-const updateBtn = document.querySelector('main button');
+const deleteBtn = document.querySelector('main button:nth-of-type(1)');
+
+/** @type {HTMLButtonElement|null} */
+const updateBtn = document.querySelector('main button:nth-of-type(2)');
+
+/** @type {HTMLButtonElement|null} */
+const dialogBtnCancel = document.querySelector('dialog button:nth-of-type(1)');
+
 /** @type {HTMLButtonElement|null} */
 const dialogBtnConfirm = document.querySelector('dialog button:nth-of-type(2)');
 
@@ -20,6 +27,7 @@ const baseUrl = location.hostname === 'localhost' ?
 
 window.addEventListener('load', async () => {
     try {
+	disableInteractiveElements();
 	const response = await fetch(
 	    `${baseUrl}/user`,
 	    requestOptionsWithAuthToken('GET')
@@ -27,6 +35,7 @@ window.addEventListener('load', async () => {
 	if (response.status === 200) {
 	    const user = await response.json();
 	    fillElements(user);
+	    enableInteractiveElements();
 	}
 	if (response.status === 401) {
 	    const resRefresh = await fetch(`${baseUrl}/refresh`);
@@ -40,14 +49,14 @@ window.addEventListener('load', async () => {
 		if (resUser.status === 200) {
 		    const user = await resUser.json();
 		    fillElements(user);
+		    enableInteractiveElements();
 		}
-		if (resUser.status === 401) location.href = '/login';
+		if (resUser.status === 401) redirect();
 	    }
-	    if (resRefresh.status === 401) location.href = '/login';
+	    if (resRefresh.status === 401) redirect();
 	}
-    } catch (error) {
-	console.error('Internet connection error');
-	location.href = '/login';
+    } catch (error) {	
+	redirect();
     }
 });
 
@@ -59,12 +68,15 @@ logoutBtn?.addEventListener('click', async () => {
 	    location.href = '/login';
 	}
     } catch (error) {
-	console.error('Lost internet connection');
+	showPopUpMessage("Lost internet connection");
+	enableInteractiveElements();
     }
 });
 
 updateBtn?.addEventListener('click', async () => {
     try {
+	removeErrorMessages();
+	disableInteractiveElements();
 	const body = getValues(
 	    [
 		".user-update-form #email",
@@ -79,10 +91,13 @@ updateBtn?.addEventListener('click', async () => {
 	if (response.status === 201) {
 	    const user = await response.json();
 	    fillElements(user);
+	    enableInteractiveElements();
 	}
 	if (response.status === 400) {
 	    const data = await response.json();
-	    showErrorMessages(data)
+	    removeErrorMessages();
+	    showErrorMessages(data.errors);
+	    enableInteractiveElements();
 	}
 	if (response.status === 401) {
 	    const resRefresh = await fetch(`${baseUrl}/refresh`);
@@ -96,10 +111,65 @@ updateBtn?.addEventListener('click', async () => {
 		if (resUser.status === 201) {
 		    const user = await resUser.json();
 		    fillElements(user);
+		    enableInteractiveElements();
 		}
 		if (resUser.status === 400) {
 		    const data = await response.json();
-		    showErrorMessages(data);
+		    removeErrorMessages();
+		    showErrorMessages(data.errors);
+		    enableInteractiveElements();
+		}
+		if (resUser.status === 401) {
+		    redirect();
+		}
+	    }
+	    if (resRefresh.status === 401) {
+		redirect();
+	    }
+	}
+    } catch (error) {
+	showPopUpMessage("Lost internet connection");
+	enableInteractiveElements();
+    }
+});
+
+deleteBtn?.addEventListener('click', () => {
+    const dialog = document.querySelector('dialog');
+    dialog?.showModal();
+});
+
+dialogBtnCancel?.addEventListener("click", () => {
+    const dialog = document.querySelector('dialog');
+    dialog?.close();
+});
+
+dialogBtnConfirm?.addEventListener("click", async () => {
+    try {
+	const dialog = document.querySelector('dialog');
+	dialog?.close();
+	disableInteractiveElements();
+	// show spinner
+	deleteBtn?.querySelector('img')?.removeAttribute('data-visible');
+	const response = await fetch(
+	    `${baseUrl}/user`,
+	    requestOptionsWithAuthToken('DELETE')
+	);
+	if (response.status === 204) {
+	    localStorage.removeItem('token');
+	    location.href = '/login';
+	}
+	if (response.status === 401) {
+	    const resRefresh = await fetch(`${baseUrl}/refresh`);
+	    if (resRefresh.status === 200) {
+		const token = await resRefresh.json();
+		localStorage.setItem('token', token);
+		const resUser = await fetch(
+		    `${baseUrl}/user`,
+		    requestOptionsWithAuthToken('DELETE'),
+		);
+		if (resUser.status === 204) {
+		    localStorage.removeItem('token');
+		    location.href = '/login';
 		}
 		if (resUser.status === 401) {
 		    redirect();
@@ -161,7 +231,7 @@ function fillElements(data) {
     if (email && firstName && lastName) {
 	email.value     = data.email;
 	firstName.value = data.firstName;
-	lastName.value  = data.lastName;	
+	lastName.value  = data.lastName;
     } else {
 	console.error("Can't find some element.");
     }
@@ -173,12 +243,17 @@ function removeErrorMessages() {
 }
 
 function redirect() {
-    showPopUpMessage('Invalid access token. Redirect... 1, 2, 3...');
+    showPopUpMessage("Invalid access token. Redirect... 1, 2, 3...");
     setTimeout(() => location.href = '/login', 2000);
 }
-const deleteBtn = document.querySelector('main button:nth-of-type(1)');
 
-dialogBtnConfirm?.addEventListener("click", async () => {
-    try {
-	// show spinner
-	deleteBtn?.querySelector('img')?.removeAttribute('data-visible');
+function disableInteractiveElements() {
+    const activeElements = document.querySelectorAll("input, button");
+    activeElements.forEach((item) => item.setAttribute("disabled", ""));
+}
+
+function enableInteractiveElements() {
+    const disableElements = document.querySelectorAll("[disabled]");
+    disableElements.forEach((item) => item.removeAttribute("disabled"));
+}
+
