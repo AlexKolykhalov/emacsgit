@@ -26,8 +26,7 @@ const baseUrl = location.hostname === 'localhost' ?
 // ************************** 1. Events *********************************//
 
 window.addEventListener('load', async () => {
-    try {
-	disableInteractiveElements();
+    try {	
 	const response = await fetch(
 	    `${baseUrl}/user`,
 	    requestOptionsWithAuthToken('GET')
@@ -68,8 +67,7 @@ logoutBtn?.addEventListener('click', async () => {
 	    location.href = '/login';
 	}
     } catch (error) {
-	showPopUpMessage("Lost internet connection");
-	enableInteractiveElements();
+	showPopUpMessage("Lost internet connection");	
     }
 });
 

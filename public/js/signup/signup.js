@@ -41,8 +41,6 @@ signupBtn?.addEventListener('click', async () => {
 		localStorage.setItem('token', token);
 		location.href = '/';
 	    }
-	    // hide spinner
-	    signupBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	    if (response.status === 400) {
 		// hide spinner
 		signupBtn.querySelector('img')?.setAttribute('data-visible', 'false');
