@@ -16,12 +16,12 @@ function generateTokens(payload) {
     const accessToken = jwt.sign(
 	payload,
 	process.env.SECRET_ACCESS_TOKEN,
-	{expiresIn: '10s'}
+	{expiresIn: '10m'}
     );
     const refreshToken = jwt.sign(
 	payload,
 	process.env.SECRET_REFRESH_TOKEN,
-	{expiresIn: '20s'}
+	{expiresIn: '30m'}
     );
 
     return {
