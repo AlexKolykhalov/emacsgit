@@ -14,7 +14,7 @@
 <body>
   <header class="content">
     <div class="center-v">
-      <button class="right-h">Logout</button>
+      <button class="right-h" disabled>Logout</button>
     </div>
   </header>
   <main class="content">
@@ -22,18 +22,18 @@
       <form class="user-update-form { column gap-m main-axis-center }">
 	<div class="[ relative ] column">
 	  <label class="fs-300" for="email">User email</label>
-	  <input id="email" type="email" value="">
+	  <input id="email" type="email" value="" disabled>
 	</div>
 	<div class="[ relative ] column">
 	  <label class="fs-300" for="firstName">User first name</label>
-	  <input id="firstName" type="text" value="">
+	  <input id="firstName" type="text" value="" disabled>
 	</div>
 	<div class="[ relative ] column">
 	  <label class="fs-300" for="lastName">User last name</label>
-	  <input id="lastName" type="text" value="">
+	  <input id="lastName" type="text" value="" disabled>
 	</div>
 	<div class="row main-axis-space-between">
-	  <button type="button">
+	  <button type="button" disabled>
 	    <div class="row gap-sm cross-axis-center">
 	      Delete account
 	      <img
@@ -44,7 +44,7 @@
 		src="../assets/clock.svg">
 	    </div>
 	  </button>
-	  <button type="button">Update</button>
+	  <button type="button" disabled>Update</button>
 	</div>
       </form>
     </div>

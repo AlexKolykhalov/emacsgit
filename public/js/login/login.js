@@ -16,6 +16,7 @@ loginBtn?.addEventListener('click', async () => {
     removeErrorMessages();
     // show spinner
     loginBtn.querySelector('img')?.removeAttribute('data-visible');
+    loginBtn.setAttribute('disabled', '');
     try {
 	const body = getValues(
 	    [
@@ -37,6 +38,7 @@ loginBtn?.addEventListener('click', async () => {
 	}
 	// hide spinner
 	loginBtn.querySelector('img')?.setAttribute('data-visible', 'false');
+	loginBtn.removeAttribute('disabled');
 	if (response.status === 400) {
 	    const data = await response.json();
 	    removeErrorMessages();
@@ -48,6 +50,7 @@ loginBtn?.addEventListener('click', async () => {
     } catch (error) {
 	// hide spinner
 	loginBtn.querySelector('img')?.setAttribute('data-visible', 'false');
+	loginBtn.removeAttribute('disabled');
 	showPopUpMessage("Lost internet connection");
     }
 });
