@@ -30,13 +30,13 @@ loginBtn?.addEventListener('click', async () => {
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify(body)
 	    });
-	// hide spinner
-	loginBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	if (response.status === 200) {
 	    const token = await response.json();
 	    localStorage.setItem('token', token);
 	    location.href = '/';
 	}
+	// hide spinner
+	loginBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	if (response.status === 400) {
 	    const data = await response.json();
 	    removeErrorMessages();

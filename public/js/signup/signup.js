@@ -30,13 +30,13 @@ signupBtn?.addEventListener('click', async () => {
 		    body: JSON.stringify(body)
 		}
 	    );
-	    // hide spinner
-	    signupBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	    if (response.status === 201) {
 		const token = await response.json();
 		localStorage.setItem('token', token);
 		location.href = '/';
 	    }
+	    // hide spinner
+	    signupBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	    if (response.status === 400) {
 		const data = await response.json();
 		if (data.errors.length > 0) {
