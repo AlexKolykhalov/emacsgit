@@ -4,6 +4,11 @@ import { getValues, showErrorMessages, showPopUpMessage } from "../utils/utils.j
 
 const signupBtn = document.querySelector('button');
 
+/** @type {string} */
+const baseUrl = location.hostname === 'localhost' ?
+      "http://localhost:3000":
+      "https://emacsgit.vercel.app";
+
 // ************************** 1. Events *********************************//
 
 signupBtn?.addEventListener('click', async () => {
@@ -23,7 +28,7 @@ signupBtn?.addEventListener('click', async () => {
 		]
 	    );
 	    const response = await fetch(
-		'http://localhost:3000/signup',
+		`${baseUrl}/signup`,
 		{
 		    method: 'POST',
 		    headers: {'Content-Type': 'application/json'},
