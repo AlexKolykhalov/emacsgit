@@ -14,6 +14,8 @@ const baseUrl = location.hostname === 'localhost' ?
 
 loginBtn?.addEventListener('click', async () => {
     removeErrorMessages();
+    // show spinner
+    loginBtn.querySelector('img')?.removeAttribute('data-visible');
     try {
 	const body = getValues(
 	    [
@@ -28,6 +30,8 @@ loginBtn?.addEventListener('click', async () => {
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify(body)
 	    });
+	// hide spinner
+	loginBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	if (response.status === 200) {
 	    const token = await response.json();
 	    localStorage.setItem('token', token);
@@ -42,6 +46,8 @@ loginBtn?.addEventListener('click', async () => {
 	    showPopUpMessage("Email and Password don't match");
 	}
     } catch (error) {
+	// hide spinner
+	loginBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	showPopUpMessage("Lost internet connection");
     }
 });
@@ -52,3 +58,4 @@ function removeErrorMessages() {
     const errorMessages = document.querySelectorAll('.user-login-form > div[data-status="error"]');
     errorMessages.forEach((item) => item.removeAttribute("data-status"));
 }
+

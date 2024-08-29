@@ -8,6 +8,8 @@ const signupBtn = document.querySelector('button');
 
 signupBtn?.addEventListener('click', async () => {
     removeErrorMessages();
+    // show spinner
+    signupBtn.querySelector('img')?.removeAttribute('data-visible');
     try {
 	/** @type {HTMLInputElement|null} */
 	const email = document.querySelector('input#email');
@@ -28,6 +30,8 @@ signupBtn?.addEventListener('click', async () => {
 		    body: JSON.stringify(body)
 		}
 	    );
+	    // hide spinner
+	    signupBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	    if (response.status === 201) {
 		const token = await response.json();
 		localStorage.setItem('token', token);
@@ -44,6 +48,8 @@ signupBtn?.addEventListener('click', async () => {
 	    }
 	}
     } catch (error) {
+	// hide spinner
+	signupBtn.querySelector('img')?.setAttribute('data-visible', 'false');
 	showPopUpMessage("Lost internet connection");
     }
 });

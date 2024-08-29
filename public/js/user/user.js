@@ -8,6 +8,8 @@ const logoutBtn = document.querySelector('header button');
 
 /** @type {HTMLButtonElement|null} */
 const updateBtn = document.querySelector('main button');
+/** @type {HTMLButtonElement|null} */
+const dialogBtnConfirm = document.querySelector('dialog button:nth-of-type(2)');
 
 /** @type {string} */
 const baseUrl = location.hostname === 'localhost' ?
@@ -108,7 +110,10 @@ updateBtn?.addEventListener('click', async () => {
 	    }
 	}
     } catch (error) {
-	console.error("Lost Internet Connection");
+	// hide spinner
+	deleteBtn?.querySelector('img')?.setAttribute('data-visible', 'false');
+	showPopUpMessage("Lost internet connection");
+	enableInteractiveElements();
     }
 });
 
@@ -171,3 +176,9 @@ function redirect() {
     showPopUpMessage('Invalid access token. Redirect... 1, 2, 3...');
     setTimeout(() => location.href = '/login', 2000);
 }
+const deleteBtn = document.querySelector('main button:nth-of-type(1)');
+
+dialogBtnConfirm?.addEventListener("click", async () => {
+    try {
+	// show spinner
+	deleteBtn?.querySelector('img')?.removeAttribute('data-visible');
